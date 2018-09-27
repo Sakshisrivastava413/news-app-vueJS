@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>News4U</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.0"></script>
+
+</head>
+
+<body>
+  <div id="app">
+    <center>
+      <h1> Latest News </h1>
+      <button v-on:click="getArticles" v-if="buttonVal">Click To Get News</button>
+      <div v-for="article in articles">
+        <h2> {{ article.title }}</h2>
+        <img v-bind:src="article.urlToImage" style="width: 400px" />
+        <h4> {{ article.description }} </h4>
+      </div>
+    </center>
+  </div>
+  <script>
+    new Vue({
+      el: "#app",
+      data: {
+        articles: [],
+        buttonVal: true
+      },
+      methods: {
+
+        getArticles: function () {
+          this.$http.get('https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=46f0528467e9410499c1b4a5066911b0').then((response) => {
+            this.articles = response.data.articles;
+            this.buttonVal = !this.buttonVal; 
+          });
+        }
+      }
+    })
+  </script>
+
+</body>
+
+</html>
